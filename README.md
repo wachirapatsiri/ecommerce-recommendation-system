@@ -17,3 +17,5 @@ Providing generic product recommendations limits cross-selling opportunities and
 ## 📈 Key Results
 * Successfully evaluated model performance using standard metrics like **HitRate@10** and **Item Coverage**.
 * Demonstrated that a Hybrid approach effectively balances recommendation accuracy with product diversity, ensuring users discover both popular items and niche products.
+
+## Web : https://olist-recommender-wachirapat.streamlit.app/
