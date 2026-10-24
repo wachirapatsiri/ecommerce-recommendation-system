@@ -1,21 +1,21 @@
-# 🛒 E-Commerce Recommendation System (Olist Dataset)
+# 🛒 Real-Time E-Commerce Recommendation System
 
 ## 📌 Project Overview
-A machine learning-based recommendation engine developed using the Brazilian E-Commerce Public Dataset (Olist) to suggest relevant products to users based on historical purchasing behavior and market trends.
+An end-to-end item-based collaborative filtering recommender system built from scratch to analyze consumer purchasing behavior and improve product discovery. 
 
 ## 🎯 Business Problem
-Providing generic product recommendations limits cross-selling opportunities and reduces user engagement. The challenge is to balance recommendations for "Cold Start" users (new customers) with highly personalized suggestions for returning customers to maximize the conversion rate.
+Customers often struggle to discover new products in large e-commerce catalogs. Relying purely on "Popularity" limits visibility for niche items. The goal of this project is to provide personalized recommendations that balance prediction accuracy with catalog diversity, driving cross-selling opportunities.
 
-## 🛠️ Solution & Action (Tech Stack: Python, Pandas, Matplotlib)
-* **Data Engineering & Cleaning:** Cleansed and merged multiple datasets (orders, products, customers) handling missing values, temporal data, and ensuring referential integrity.
-* **Exploratory Data Analysis (EDA):** Analyzed customer purchase breadth and top-selling categories to understand consumer economic behavior.
-* **Recommendation Strategies:** Developed and compared multiple algorithms:
-  1. All-time Popularity & Recent Popularity (for cold-start users).
-  2. Collaborative Filtering (Item-CF) based on user interaction matrices.
-  3. Hybrid Approach blending CF with category-specific trends.
+## 🛠️ Solution & Action (Tech Stack: Python, Pandas, Scikit-Learn)
+* **Data Engineering:** Built a robust data pipeline to clean and merge complex relational datasets (Customers, Orders, Products, Reviews).
+* **Modeling:** Developed an Item-Based Collaborative Filtering (Item-CF) algorithm trained on **112K** transaction records.
+* **Evaluation:** Shifted away from standard accuracy metrics to use ranking metrics (HitRate@10) and Item Coverage to measure real-world recommendation value.
 
 ## 📈 Key Results
-* Successfully evaluated model performance using standard metrics like **HitRate@10** and **Item Coverage**.
-* Demonstrated that a Hybrid approach effectively balances recommendation accuracy with product diversity, ensuring users discover both popular items and niche products.
+* Achieved a **HitRate@10 of 0.0238**, maintaining baseline accuracy while significantly outperforming the popularity model in diversity.
+* Improved Item Coverage to **>1.5%**, ensuring a wider variety of products are surfaced to users rather than just top-sellers.
 
 ## Web : https://olist-recommender-wachirapat.streamlit.app/
+
+## 💻 Live Demo & UI
+<img width="1459" height="770" alt="image" src="https://github.com/user-attachments/assets/22b8c38f-69cb-4de9-813b-01fb565dc6bd" />
