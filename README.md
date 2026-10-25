@@ -1,4 +1,4 @@
-# 🛒 Real-Time E-Commerce Recommendation System
+# 🛒 E-Commerce Recommendation System
 
 ## 📌 Project Overview
 An end-to-end item-based collaborative filtering recommender system built from scratch to analyze consumer purchasing behavior and improve product discovery. 
