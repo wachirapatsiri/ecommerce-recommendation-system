@@ -1,0 +1,75 @@
+{
+  "checkpoints": {
+    "1 (Data audit)": {
+      "dataset_summary": "               table   rows  columns  exact_duplicate_rows  missing_cells\n              orders  99441        8                     0           4908\n         order_items 112650        7                     0              0\n            products  32951        9                     0           2448\n             reviews  99224        7                     0         145903\ncategory_translation     71        2                     0              0\n           customers  99441        5                     0              0",
+      "key_audit_all_passed": true,
+      "relationship_audit": "                   relationship  source_rows  missing_key_rows  unmatched_rows  unmatched_unique_keys\n           order_items → orders       112650                 0               0                      0\n             orders → customers        99441                 0               0                      0\n         order_items → products       112650                 0               0                      0\nproducts → category_translation        32951               610              13                      2\n               reviews → orders        99224                 0               0                      0\n               orders → reviews        99441                 0             768                    768",
+      "orders_with_multiple_reviews": 547,
+      "orders_without_review": 768
+    },
+    "2 (Merge & cleaning)": {
+      "rows": "df_main=112,650 | df_clean=112,650 | df_reco=110,197",
+      "buyers_in_df_reco": "93,358",
+      "products_in_df_reco": "32,216",
+      "merge_audit": "                    step  rows_after  unmatched_item_rows\n              Add orders      112650                    0\n   Add customer identity      112650                    0\n            Add products      112650                    0\nAdd category translation      112650                 1627\n     Add selected review      112650                  942",
+      "category_audit": "    category_status  item_rows  unique_products\n   missing_category       1603              610\nmissing_translation         24               13\n         translated     111023            32328",
+      "filter_audit": "interaction_eligibility  item_rows  unique_orders\n               included     110197          96478\n          not_delivered       2453           2188",
+      "date_issue_audit": "                                 issue  affected_orders\n              approved_before_purchase                0\n               carrier_before_purchase              166\n              delivered_before_carrier               23\n             delivered_before_purchase                0\ndelivered_status_without_delivery_date                8",
+      "df_reco_review_score_missing": 827
+    },
+    "3 (EDA & interactions)": {
+      "users_items_interactions": "93,358 users | 32,216 items | 99,785 interactions",
+      "sparsity_percent": "99.99668",
+      "categories_total_and_top10_share": "74 categories | top10 share 63.65%",
+      "pct_users_with_1_product": "94.29%",
+      "pct_users_with_more_than_1_order": "3.00%",
+      "pct_items_with_1_buyer": "59.52%",
+      "activity_distribution": "distinct_products  customers  percent\n                1      88024    94.29\n                2       4574     4.90\n                3        549     0.59\n                4        150     0.16\n               5+         61     0.07"
+    },
+    "4 (Split & baselines)": {
+      "split_summary": "                               metric                   value\n                               Cutoff              2018-06-20\n                         Train period 2016-09-15 → 2018-06-19\n                          Test period 2018-06-20 → 2018-08-29\n                      Train item rows                  93,572\n                       Test item rows                  16,625\n                          Train users                  79,146\n                          Train items                  27,462\n                     Test pairs (all)                  15,249\n                 Repeat pairs removed                      37\n                      Evaluated users                  14,507\n                           Warm users                     295\n                           Cold users                  14,212\nEval pairs with item not in Train (%)                   41.39",
+      "baseline_results": "                  model user_group  users  precision@10  recall@10  hit_rate@10  ndcg@10  item_coverage\n                 Random        All  14507        0.0000     0.0003       0.0003   0.0001         0.9951\n                 Random       Warm    295        0.0000     0.0000       0.0000   0.0000         0.1023\n                 Random       Cold  14212        0.0000     0.0004       0.0004   0.0002         0.9939\n  Popularity (All-time)        All  14507        0.0011     0.0105       0.0108   0.0049         0.0004\n  Popularity (All-time)       Warm    295        0.0014     0.0096       0.0136   0.0039         0.0004\n  Popularity (All-time)       Cold  14212        0.0011     0.0105       0.0108   0.0049         0.0004\nPopularity (Recent 90d)        All  14507        0.0018     0.0177       0.0181   0.0074         0.0004\nPopularity (Recent 90d)       Warm    295        0.0024     0.0198       0.0237   0.0086         0.0004\nPopularity (Recent 90d)       Cold  14212        0.0018     0.0177       0.0179   0.0074         0.0004",
+      "pct_warm_of_eval_users": "2.03%"
+    },
+    "5 (Model comparison, main split)": {
+      "model_results": "                       model user_group  users  precision@10  recall@10  hit_rate@10  ndcg@10  item_coverage\n     Popularity (Recent 90d)       Warm    295        0.0024     0.0198       0.0237   0.0086         0.0004\n     Popularity (Recent 90d)        All  14507        0.0018     0.0177       0.0181   0.0074         0.0004\n        Category-Based + Pop       Warm    295        0.0020     0.0203       0.0203   0.0108         0.0157\n        Category-Based + Pop        All  14507        0.0018     0.0177       0.0180   0.0075         0.0157\n               Item-CF + Pop       Warm    295        0.0024     0.0198       0.0237   0.0074         0.0154\n               Item-CF + Pop        All  14507        0.0018     0.0177       0.0181   0.0074         0.0154\nHybrid (CF → Category → Pop)       Warm    295        0.0017     0.0169       0.0169   0.0084         0.0282\nHybrid (CF → Category → Pop)        All  14507        0.0018     0.0176       0.0179   0.0074         0.0282",
+      "warm_bootstrap_ci": "                       model  n_users  hits  hit_rate@10  ci_95_low  ci_95_high  diff_vs_pop  diff_ci_low  diff_ci_high  better_than_pop\n     Popularity (Recent 90d)      295     7       0.0237     0.0068      0.0441       0.0000       0.0000        0.0000            False\n        Category-Based + Pop      295     6       0.0203     0.0068      0.0373      -0.0034      -0.0237        0.0169            False\n               Item-CF + Pop      295     7       0.0237     0.0068      0.0441       0.0000       0.0000        0.0000            False\nHybrid (CF → Category → Pop)      295     5       0.0169     0.0034      0.0339      -0.0068      -0.0271        0.0102            False",
+      "cf_reach_warm": "46.78%",
+      "category_reach_warm": "98.31%",
+      "item_sim_pairs_and_items_with_neighbors": "12,604 pairs | 23.96% of items",
+      "coverage_ratio_cf_vs_pop": "38.5x"
+    },
+    "6 (Rolling-origin)": {
+      "fold_table": "        fold     cutoff    test_end  eval_users  warm_users  Popularity (Recent 90d)  Category-Based + Pop  Item-CF + Pop  Hybrid (CF → Category → Pop)\nfold0 (main) 2018-06-20 end of data       14507         295                   0.0237                0.0203         0.0237                        0.0169\n       fold1 2018-04-10  2018-06-20       15213         308                   0.0195                0.0325         0.0195                        0.0325\n       fold2 2018-01-29  2018-04-10       15962         241                   0.0249                0.0249         0.0415                        0.0290",
+      "pooled_warm_results": "                       model  n_users  hits  hit_rate@10  ci_95_low  ci_95_high  diff_vs_pop  diff_ci_low  diff_ci_high  better_than_pop\n     Popularity (Recent 90d)      844    19       0.0225     0.0130      0.0332       0.0000       0.0000        0.0000            False\n        Category-Based + Pop      844    22       0.0261     0.0154      0.0367       0.0036      -0.0095        0.0166            False\n               Item-CF + Pop      844    23       0.0273     0.0166      0.0391       0.0047      -0.0012        0.0118            False\nHybrid (CF → Category → Pop)      844    22       0.0261     0.0154      0.0367       0.0036      -0.0107        0.0166            False"
+    },
+    "7 (Final model & export)": {
+      "model_file": "models/recommender_itemcf_v1.joblib (3.87 MB)",
+      "users_items": "93,358 users | 32,216 items",
+      "trained_until": "2018-08-29 15:00:37",
+      "latency_ms_per_request": "0.43",
+      "evaluation_saved_in_model": "{\"cutoff\": \"2018-06-20\", \"warm_users\": 295, \"warm_hits\": 7, \"warm_hit_rate@10\": 0.0237, \"warm_hit_rate_ci95\": [0.0068, 0.0441], \"warm_item_coverage\": 0.01540310246886607, \"pop_item_coverage\": 0.000400553492098172, \"rolling_warm_cases\": 844, \"rolling_hit_rate@10\": 0.0273, \"rolling_hit_rate_ci95\": [0.0166, 0.0391]}",
+      "requirements_unpinned": [
+        "streamlit"
+      ]
+    }
+  },
+  "evaluation": {
+    "cutoff": "2018-06-20",
+    "warm_users": 295,
+    "warm_hits": 7,
+    "warm_hit_rate@10": 0.0237,
+    "warm_hit_rate_ci95": [
+      0.0068,
+      0.0441
+    ],
+    "warm_item_coverage": 0.01540310246886607,
+    "pop_item_coverage": 0.000400553492098172,
+    "rolling_warm_cases": 844,
+    "rolling_hit_rate@10": 0.0273,
+    "rolling_hit_rate_ci95": [
+      0.0166,
+      0.0391
+    ]
+  }
+}
