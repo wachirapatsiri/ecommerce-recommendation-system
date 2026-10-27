@@ -1,7 +1,0 @@
-numpy>=2.1
-scipy
-pandas>=2.2.3
-joblib
-streamlit
-fastapi
-uvicorn
