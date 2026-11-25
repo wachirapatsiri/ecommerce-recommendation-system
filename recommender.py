@@ -1,7 +1,7 @@
 """Core recommendation logic shared by the Streamlit app (app.py) and the FastAPI service (api.py).
 
 The model file is plain data (sparse matrices, ids, a popularity ranking) produced by
-notebooks/E_commerce_Recommendation_System.ipynb, so no notebook code is needed to load it.
+notebooks/olist_recommender.ipynb, so no notebook code is needed to load it.
 
 Recommendation strategy
 -----------------------
